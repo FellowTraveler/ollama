@@ -93,6 +93,7 @@ type ChatCompletionRequest struct {
 	FrequencyPenalty *float64        `json:"frequency_penalty"`
 	PresencePenalty  *float64        `json:"presence_penalty"`
 	TopP             *float64        `json:"top_p"`
+	MinP             *float64        `json:"min_p"`
 	ResponseFormat   *ResponseFormat `json:"response_format"`
 	Tools            []api.Tool      `json:"tools"`
 }
@@ -506,6 +507,12 @@ func fromChatRequest(r ChatCompletionRequest) (*api.ChatRequest, error) {
 		options["top_p"] = *r.TopP
 	} else {
 		options["top_p"] = 1.0
+	}
+
+	if r.MinP != nil {
+		options["min_p"] = *r.MinP
+	} else {
+		options["min_p"] = 0.0
 	}
 
 	var format json.RawMessage
